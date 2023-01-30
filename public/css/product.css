@@ -1,0 +1,12 @@
+.crousel-img {
+    height: 400px;
+    width: auto;
+}
+
+.box-shadow {
+    box-shadow: 4px 3px 15px 0px rgb(171, 163, 163);
+}
+
+.filter {
+    filter: brightness(80%);
+}

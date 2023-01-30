@@ -1,17 +1,26 @@
 const contactModel = require('../models/Contacts')
+const Registration = require('../models/Registration');
+const flash = require('express-flash')
 const registrationModel = require('../models/Registration')
+const bcrypt = require('bcrypt');
 class AuthController {
     // Creating New User
     static newUser = async (req, res) => {
+        const hassedPassword = await bcrypt.hash(req.body.password, 10)
         try {
-            const doc = new registrationModel(req.body)
+            const doc = new registrationModel({
+                name: req.body.name,
+                email: req.body.email,
+                password: hassedPassword
+            })
             console.log(doc)
             if (req.body.password === req.body.confirmPassword) {
                 await doc.save()
                 res.redirect('/login')
             }
             else {
-                res.send("password doesn't match")
+                req.flash('danger', 'Password not matched.')
+                res.redirect('/registration')
             }
         } catch (error) {
             console.log(error)
@@ -19,22 +28,8 @@ class AuthController {
         }
     }
 
-    // Verifying Login
-    static verifyLogin = async (req, res) => {
-        const findUser = await registrationModel.findOne({ email: req.body.email });
-        if (!findUser) {
-            res.send('Email not found!!!')
-        }
-        else {
-            if (findUser.password === req.body.password) {
-                res.send('You have been logged in successfully!!')
-            }
-            else {
-                res.send('Password is not correct!!!')
-            }
-        }
+    // Verify Login
 
-    }
 
     // Contact messages
     static contact = async (req, res) => {

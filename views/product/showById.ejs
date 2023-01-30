@@ -1,0 +1,68 @@
+<%- include('../partials/header.ejs') %>
+    <%- include('../partials/navbar.ejs') %>
+        <div class="container d-flex justify-content-center mt-4">
+            <div class="card">
+                <!-- <img src=" ..." class="card-img-top" alt="..."> -->
+                <div class="card-body" style="width: 550px;">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Name - </td>
+                                <td>
+                                    <%=data.name %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Type - </td>
+                                <td>
+                                    <%=data.type %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Quantity - </td>
+                                <td>
+                                    <%=data.qty %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Price/qty - </td>
+                                <td>
+                                    <%=data.price %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total Price - </td>
+                                <td>
+                                    <%=data.qty * data.price %>/-
+                                </td>
+                            </tr>
+                            <tr>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                    <div class="discription">
+                        <h5 class="text-secondary">Description</h5>
+                        <p>
+                            <%=data.description %>
+                        </p>
+
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <form action="/product/show/<%=data._id%>/edit">
+                            <button class="btn btn-info" type="submit">Edit</button>
+                        </form>
+                        <form action="/delete/<%=data._id%>" method="post">
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                        <form action="/product/show" method="get">
+                            <button class="btn btn-warning" type="submit">Back</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <%- include('../partials/footer.ejs') %>

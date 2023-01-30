@@ -1,0 +1,65 @@
+<%- include('../partials/header.ejs') %>
+    <%- include('../partials/navbar.ejs') %>
+        <div class="container">
+
+            <div class="row">
+                <a href="/product/add" class="text-center text-info mt-2 mb-2" style="font-size: 2rem;"">Add New
+                    Product</a>
+                <table class=" table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">SN.</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price/qty</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let i=1 %>
+                            <%data.forEach(elm=> {%>
+                                <tr>
+                                    <th scope="row">
+                                        <%=i++ %>
+                                    </th>
+                                    <td>
+                                        <%=elm.name%>
+                                    </td>
+                                    <td>
+                                        <%=elm.type%>
+                                    </td>
+                                    <td>
+                                        <%=elm.qty%>
+                                    </td>
+                                    <td>
+                                        <%=elm.price%>
+                                    </td>
+                                    <td>
+                                        <%=elm.qty%>&times;<%=elm.price%>=<span style="font-weight:600">
+                                                    <%=elm.qty * elm.price%>
+                                                </span>
+                                    </td>
+                                    <td>
+                                        <% if(!elm.description) {%>
+                                            <p>No, description</p>
+                                            <%} else {%>
+                                                <%=elm.description.slice(0,50)%>...
+                                                    <%}%>
+
+                                    </td>
+                                    <td>
+                                        <!-- <form action="/product/show/<%=elm._id%>" method="get">
+                                            <button type="submit" class="btn btn-secondary">View Details</button>
+                                        </form> -->
+                                        <a href="/product/show/<%=elm._id%>" class="text-danger">View Details</a>
+                                    </td>
+                                </tr>
+                                <%})%>
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+
+        <%- include('../partials/footer.ejs') %>
