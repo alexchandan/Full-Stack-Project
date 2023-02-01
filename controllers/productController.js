@@ -5,6 +5,7 @@ class ProductController {
             const doc = new productModel(req.body);
             console.log(doc)
             await doc.save();
+            req.flash('success', 'Product added successfully!')
             res.redirect('/product/add')
         } catch (error) {
             console.log(error)
@@ -25,6 +26,11 @@ class ProductController {
     static showById = async (req, res) => {
         try {
             const productById = await productModel.findOne({ _id: `${req.params.id}` })
+            if (!productById) {
+                console.log('product not found')
+                req.flash('error', 'Cannot find the product')
+                return res.redirect('/product/show')
+            }
             console.log(productById)
             res.render('product/showById', { title: "Show Your Product", data: productById })
 
@@ -34,7 +40,13 @@ class ProductController {
     }
     static editProduct = async (req, res) => {
         try {
+            console.log('edit product hitted!!')
             const productById = await productModel.findOne({ _id: `${req.params.id}` })
+            if (!productById) {
+                console.log('product not found')
+                req.flash('error', 'Cannot find the product')
+                return res.redirect('/product/show')
+            }
             res.render('product/editProduct', { title: "Edit Product", data: productById })
 
         } catch (error) {
@@ -45,6 +57,7 @@ class ProductController {
         try {
             const productById = await productModel.findByIdAndUpdate({ _id: `${req.params.id}` }, req.body)
             await productById.save();
+            req.flash('success', 'Product updated successfully!')
             res.redirect(`/product/show`)
         } catch (error) {
             console.log(error)
@@ -53,7 +66,9 @@ class ProductController {
     static deleteProduct = async (req, res) => {
         console.log('deleteProduct triggeredd')
         try {
-            const productById = await productModel.findByIdAndDelete({ _id: `${req.params.id}` })
+            await productModel.findByIdAndDelete({ _id: `${req.params.id}` })
+            // req.flash('success', 'Product has been deleted.')
+            req.flash('success', 'Product deleted successfully!')
             res.redirect(`/product/show`)
         } catch (error) {
             console.log(error)

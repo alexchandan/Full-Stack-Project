@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local')
 
 
-const verifyLogin = () => {
+module.exports = verifyLogin = () => {
     console.log('verifylogin hitted')
     passport.use(new LocalStrategy(async (username, password, done) => {
         try {
@@ -27,5 +27,3 @@ const verifyLogin = () => {
         return done(null, user.id)
     })
 }
-
-module.exports = verifyLogin 

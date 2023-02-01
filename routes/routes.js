@@ -4,12 +4,8 @@ const UserController = require('../controllers/userController');
 const productContoller = require('../controllers/productController')
 const router = express.Router();
 const passport = require('passport')
-
-// Protect route
-const isAuthenticated = (req, res, next) => {
-    if (req.user) return next();
-    res.redirect('/login')
-}
+const isAuthenticated = require('../middlewares/isAuthenticated');
+const isLoggedIn = require('../middlewares/isLoggedIn');
 
 router.get('/', UserController.home)
 // Authentication
@@ -34,6 +30,6 @@ router.get('/product/show/:id/edit', productContoller.editProduct)
 router.post('/product/show/:id/edit', productContoller.updateProduct)
 router.post('/delete/:id', productContoller.deleteProduct)
 // Project lists
-router.get('/projects', isAuthenticated, UserController.projectslist)
+router.get('/projects', isLoggedIn, UserController.projectslist)
 
 module.exports = router;
