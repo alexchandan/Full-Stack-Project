@@ -6,7 +6,8 @@ const productSchema = new mongoose.Schema({
     qty: { type: Number, required: true, trim: true },
     price: { type: Number, required: true, trim: true },
     description: { type: String, trim: true },
-    addedAt: { type: Date, default: Date.now() }
+    addedAt: { type: Date, default: Date.now() },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 })
 
-module.exports = new mongoose.model('product', productSchema)
+module.exports = Product = new mongoose.model('product', productSchema)

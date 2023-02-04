@@ -1,46 +1,39 @@
 const contactModel = require('../models/Contacts')
-const Registration = require('../models/Registration');
-const flash = require('express-flash')
-const registrationModel = require('../models/Registration')
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const catchAsync = require('../utils/catchAsync')
 class AuthController {
     // Creating New User
-    static newUser = async (req, res) => {
-        const hassedPassword = await bcrypt.hash(req.body.password, 10)
-        try {
-            const doc = new registrationModel({
-                name: req.body.name,
-                email: req.body.email,
+    static newUser = catchAsync(async (req, res) => {
+        const { email, name, password, confirmPassword } = req.body;
+        const user = await User.findOne({ email })
+        if (user) {
+            req.flash('error', 'User already exits!')
+            console.log(user)
+            return res.redirect('/registration')
+        }
+        if (password == confirmPassword) {
+            const hassedPassword = await bcrypt.hash(password, 10); // never declear a variable before condition
+            const doc = new User({
+                name: name,
+                email: email,
                 password: hassedPassword
             })
-            console.log(doc)
-            if (req.body.password === req.body.confirmPassword) {
-                await doc.save()
-                res.redirect('/login')
-            }
-            else {
-                req.flash('danger', 'Password not matched.')
-                res.redirect('/registration')
-            }
-        } catch (error) {
-            console.log(error)
-            res.send('Error at newUser')
+            console.log('this is from user', doc)
+            await doc.save();
+            res.redirect('/login')
         }
-    }
-
-    // Verify Login
-
+        else {
+            req.flash('error', 'Password not matched.')
+            res.redirect('/registration')
+        }
+    })
 
     // Contact messages
-    static contact = async (req, res) => {
-        try {
-            const contact = new contactModel(req.body);
-            await contact.save();
-        } catch (error) {
-            console.log(error)
-            res.send('Error at contact controller')
-        }
-    }
+    static contact = catchAsync(async (req, res) => {
+        const contact = new contactModel(req.body);
+        await contact.save();
+    })
 }
 
 module.exports = AuthController

@@ -1,10 +1,9 @@
-const productModel = require('../models/Product')
 class UserController {
     static home = (req, res) => {
         res.render('home', { title: "Home" });
     }
     static login = (req, res) => {
-        res.render('auth/login', { title: "Login" });
+        res.render('auth/login', { title: "Login", message: req.flash('danger') });
     }
     static registration = (req, res) => {
         res.render('auth/registration', { title: "Registration" });
@@ -12,7 +11,6 @@ class UserController {
 
     static project = (req, res) => {
         res.status(200).send('You can now check all the projects', { title: "project" })
-        // res.status(200).send("project", { title: 'project' })
     }
 
     static addProduct = (req, res) => {
